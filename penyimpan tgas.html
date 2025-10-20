@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Mapel - Tugas Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #341931, #000000);
+            /* Gradasi ungu ke hitam */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            /* Warna teks utama menjadi putih */
+        }
+
+        /* Menyembunyikan elemen-elemen halaman */
+        #loginPage,
+        #mapelPage,
+        #tugasPage {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* Style untuk halaman login */
+        #loginPage {
+            display: block;
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            background: rgba(255, 255, 255, 0.1);
+            /* Latar belakang semi-transparan */
+            padding: 30px 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            /* Efek bayangan lebih kuat */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Efek kaca */
+        }
+
+        #loginPage h2 {
+            margin-bottom: 10px;
+            color: #eee;
+            /* Warna teks lebih terang */
+        }
+
+        #loginPage p {
+            margin-bottom: 20px;
+            color: #ccc;
+            /* Warna teks lebih terang */
+        }
+
+        #loginPage input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #666;
+            /* Border lebih gelap */
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            /* Latar belakang input semi-transparan */
+            color: white;
+            /* Warna teks input */
+        }
+
+        #loginPage input::placeholder {
+            color: #bbb;
+            /* Warna placeholder input */
+        }
+
+        #loginPage button {
+            width: 100%;
+            padding: 10px;
+            background: #663399;
+            /* Ungu lebih gelap */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            /* Transisi hover */
+        }
+
+        #loginPage button:hover {
+            background: #442266;
+            /* Ungu lebih gelap saat hover */
+        }
+
+        #loginPage small {
+            color: #ff6666;
+            /* Merah lebih terang */
+            display: none;
+        }
+
+        /* Style untuk daftar mata pelajaran */
+        .mapel-container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            /* Latar belakang semi-transparan */
+            margin: auto;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            /* Efek bayangan lebih kuat */
+            text-align: left;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Efek kaca */
+        }
+
+        .mapel-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #eee;
+            /* Warna teks lebih terang */
+        }
+
+        .mapel-container ul {
+            list-style: none;
+        }
+
+        .mapel-container li {
+            background: rgba(102, 51, 153, 0.3);
+            /* Ungu dengan transparansi */
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            /* Transisi hover */
+            color: white;
+            /* Warna teks putih */
+        }
+
+        .mapel-container li:hover {
+            background: rgba(68, 34, 102, 0.5);
+            /* Ungu lebih gelap saat hover */
+        }
+
+        .mapel-container button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px;
+            background: #663399;
+            /* Ungu lebih gelap */
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            /* Transisi hover */
+        }
+
+        .mapel-container button:hover {
+            background: #442266;
+            /* Ungu lebih gelap saat hover */
+        }
+
+        /* Style untuk card tugas */
+        .tugas-card {
+            background: rgba(255, 255, 255, 0.1);
+            /* Latar belakang semi-transparan */
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            /* Efek bayangan lebih kuat */
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* Efek kaca */
+        }
+
+        .tugas-card h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #eee;
+            /* Warna teks lebih terang */
+        }
+
+        .tugas-card button {
+            padding: 10px 15px;
+            background: #663399;
+            /* Ungu lebih gelap */
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            /* Transisi hover */
+        }
+
+        .tugas-card button:hover {
+            background: #442266;
+            /* Ungu lebih gelap saat hover */
+        }
+
+        .tugas-item {
+            background: rgba(102, 51, 153, 0.3);
+            /* Ungu dengan transparansi */
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: left;
+            color: white;
+            /* Warna teks putih */
+        }
+
+        .tugas-item a {
+            color: #99ccff;
+            /* Biru lebih terang */
+            text-decoration: none;
+        }
+
+        .tugas-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style untuk menu navigasi */
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            /* Initially hidden */
+            background-color: #331a33;
+            /* Solid purple background */
+            padding-top: 20px;
+            border-right: 1px solid #221122;
+            /* Darker border */
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.5);
+            /* Stronger shadow */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Center items horizontally */
+            transition: left 0.3s ease;
+            /* Smooth transition */
+            z-index: 1000;
+            /* Ensure it's on top */
+        }
+
+        .sidebar a {
+            padding: 16px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #eee;
+            /* Lighter text color */
+            display: block;
+            transition: 0.3s;
+            width: 100%;
+            text-align: center;
+            /* Center text */
+        }
+
+        .sidebar a:hover {
+            background-color: #442244;
+            /* Darker purple on hover */
+        }
+
+        /* Style untuk ikon (Font Awesome) */
+        .sidebar i {
+            margin-right: 10px;
+        }
+
+        /* Style untuk tombol buka/tutup sidebar */
+        #sidebarToggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #663399;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            z-index: 1001;
+            /* Ensure it's on top */
+        }
+
+        /* Style saat sidebar terbuka */
+        .sidebar.open {
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Tombol untuk membuka/tutup sidebar -->
+    <button id="sidebarToggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar">
+        <a href="#" onclick="tampilkanMapel()"><i class="fas fa-book"></i> Mapel</a>
+        <a href="#" onclick="tampilkanTugas()"><i class="fas fa-tasks"></i> Tugas</a>
+        <a href="https://www.tiktok.com/@zakkh313?_t=ZS-90fUHQ8o7jW&_r" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+        <a href="https://www.instagram.com/zki_xyyz?igsh=MWRwYXJrazAyejJicQ==" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://wa.me/6285180009635" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="donasi.html" target="_blank"><i class="fas fa-heart"></i> Donasi</a>
+    </div>
+
+    <!-- ===== LOGIN ===== -->
+    <div id="loginPage">
+        <h2>Masukkan Password</h2>
+        <p>Masukkan password admin atau viewer untuk membuka halaman.</p>
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Buka Halaman</button>
+        <small id="errorMsg">Password salah!</small>
+    </div>
+
+    <!-- ===== MAPEL ===== -->
+    <div id="mapelPage">
+        <div class="mapel-container">
+            <h1>Daftar Mata Pelajaran</h1>
+            <ul>
+                <li onclick="bukaTugas('Administrasi Sistem Jaringan (ASJ)')">Administrasi Sistem Jaringan (ASJ)</li>
+                <li onclick="bukaTugas('Administrasi Infrastruktur Jaringan (AIJ)')">Administrasi Infrastruktur Jaringan (AIJ)</li>
+                <li onclick="bukaTugas('Produk Kreatif dan Kewirausahaan (PKK)')">Produk Kreatif dan Kewirausahaan (PKK)</li>
+                <li onclick="bukaTugas('Bahasa Inggris')">Bahasa Inggris</li>
+                <li onclick="bukaTugas('Bahasa Jepang')">Bahasa Jepang</li>
+                <li onclick="bukaTugas('Bahasa Jerman')">Bahasa Jerman</li>
+                <li onclick="bukaTugas('Matematika')">Matematika</li>
+                <li onclick="bukaTugas('Bahasa Indonesia')">Bahasa Indonesia</li>
+                <li onclick="bukaTugas('Pendidikan Agama Islam (PAI)')">Pendidikan Agama Islam (PAI)</li>
+                <li onclick="bukaTugas('Sejarah')">Sejarah</li>
+                <li onclick="bukaTugas('Keminang Kabauan')">Keminang Kabauan</li>
+                <li onclick="bukaTugas('Pendidikan Kewarganegaraan (PKN)')">Pendidikan Kewarganegaraan (PKN)</li>
+                <li onclick="bukaTugas('PJOK')">PJOK</li>
+            </ul>
+            <button onclick="logout()">Kembali ke Login</button>
+        </div>
+    </div>
+
+    <!-- ===== TUGAS ===== -->
+    <div id="tugasPage">
+        <div class="tugas-card">
+            <h1 id="judulMapel"></h1>
+            <div id="daftarTugas"></div>
+            <!-- Form tambah tugas (hanya admin) -->
+            <div id="formTambah" style="display:none; margin-top:15px;">
+                <input type="text" id="judulTugas" placeholder="Judul Tugas"
+                    style="width:100%;padding:8px;margin-bottom:10px; color: black;">
+                <input type="text" id="linkTugas" placeholder="Link file (Google Drive / PDF)"
+                    style="width:100%;padding:8px;margin-bottom:10px; color: black;">
+                <button onclick="tambahTugas()">Tambah Tugas</button>
+            </div>
+            <button onclick="kembaliKeMapel()">Kembali ke Daftar Mapel</button>
+        </div>
+    </div>
+
+    <!-- ===== FIREBASE (versi 8) ===== -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzZaHCzto7h_07yMp9HMsZdCd3aloviiQ",
+            authDomain: "tugas-sklah.firebaseapp.com",
+            databaseURL: "https://tugas-sklah-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "tugas-sklah",
+            storageBucket: "tugas-sklah.firebasestorage.app",
+            messagingSenderId: "327049104689",
+            appId: "1:327049104689:web:f2d2a060eeccfad4897410",
+            measurementId: "G-XR55GFN1R7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let admin = false;
+        let currentMapel = "";
+        let sidebarOpen = false; // Status sidebar
+
+        function login() {
+            const pass = document.getElementById("password").value.trim();
+            const error = document.getElementById("errorMsg");
+
+            if (pass === "zakiadmin128850") { // Admin password
+                admin = true;
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("mapelPage").style.display = "block";
+                document.querySelector('.sidebar').style.display = 'flex'; // Tampilkan sidebar
+                document.getElementById('sidebarToggle').style.display = 'block'; // Tampilkan tombol toggle
+            } else if (pass === "zakiaja123") { // Viewer password
+                admin = false;
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("mapelPage").style.display = "block";
+                document.querySelector('.sidebar').style.display = 'flex'; // Tampilkan sidebar
+                document.getElementById('sidebarToggle').style.display = 'block'; // Tampilkan tombol toggle
+            } else {
+                error.style.display = "block";
+            }
+        }
+
+        function logout() {
+            document.getElementById("mapelPage").style.display = "none";
+            document.getElementById("loginPage").style.display = "block";
+            document.getElementById("password").value = "";
+            document.getElementById("errorMsg").style.display = "none";
+            document.querySelector('.sidebar').style.left = '-200px'; // Sembunyikan sidebar
+            document.getElementById('sidebarToggle').style.display = 'none'; // Sembunyikan tombol toggle
+            sidebarOpen = false;
+        }
+
+        function bukaTugas(mapel) {
+            currentMapel = mapel;
+            document.getElementById("mapelPage").style.display = "none";
+            document.getElementById("tugasPage").style.display = "block";
+            document.getElementById("judulMapel").innerText = mapel;
+            document.getElementById("formTambah").style.display = admin ? "block" : "none";
+            loadTugas();
+        }
+
+        function kembaliKeMapel() {
+            document.getElementById("tugasPage").style.display = "none";
+            document.getElementById("mapelPage").style.display = "block";
+        }
+
+        function tambahTugas() {
+            const judul = document.getElementById("judulTugas").value.trim();
+            const link = document.getElementById("linkTugas").value.trim();
+            if (!judul || !link) {
+                alert("Lengkapi semua kolom!");
+                return;
+            }
+            const ref = db.ref("tugas/" + currentMapel);
+            ref.push({
+                judul,
+                link
+            });
+            document.getElementById("judulTugas").value = "";
+            document.getElementById("linkTugas").value = "";
+            loadTugas();
+        }
+
+        function loadTugas() {
+            const container = document.getElementById("daftarTugas");
+            container.innerHTML = "<p>Memuat...</p>";
+            const ref = db.ref("tugas/" + currentMapel);
+            ref.on("value", snapshot => {
+                container.innerHTML = "";
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        const t = data[key];
+                        const div = document.createElement("div");
+                        div.className = "tugas-item";
+                        div.innerHTML = `<b>${t.judul}</b><br><a href="${t.link}" target="_blank">Lihat / Download</a>`;
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = "<em>Belum ada tugas.</em>";
+                }
+            });
+        }
+
+        function tampilkanMapel() {
+            document.getElementById("tugasPage").style.display = "none";
+            document.getElementById("mapelPage").style.display = "block";
+        }
+
+        function tampilkanTugas() {
+            document.getElementById("mapelPage").style.display = "none";
+            document.getElementById("tugasPage").style.display = "block";
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebarOpen = !sidebarOpen;
+            if (sidebarOpen) {
+                sidebar.classList.add('open');
+                sidebar.style.left = '0'; // Buka sidebar
+            } else {
+                sidebar.classList.remove('open');
+                sidebar.style.left = '-200px'; // Tutup sidebar
+            }
+        }
+    </script>
+</body>
+
+</html>
